@@ -25,17 +25,37 @@ main(int argc, char** argv)
 
     PySys_SetArgv(argc, argv);
 
+    /* this does not work inside a bundle */
     global["_pwd"] = full_path.string();
 
     py::exec(
+      "import os\n"
       "import sys\n"
-      "sys.path = [_pwd + '/lib',\n"
+      "import site\n"
+      "old_syspath = sys.path\n"
+      "sys.path = [_pwd + '/lib',\n"  /* XXX not needed after site init */
+      "            _pwd + '/lib/site-packages',\n"
       "            _pwd + '/apps',\n"
       "            _pwd + '/apps/eip',\n"
       "            _pwd]\n"
+      "site.addsitedir(_pwd + '/lib/site-packages')\n"
+      "if sys.platform == 'darwin':\n"
+      "    sys.path = sys.path + old_syspath\n"
+      "print '[+ DEBUG: sys.path]'\n"
+      "for p in sys.path: print p\n"
+      "print '[+ DEBUG]'\n"
       "import os\n"
       "import encodings.idna\n" // we need to make sure this is imported
-      "sys.argv.append('--standalone')\n", global, global);
+      /* XXX DEBUG */
+      "print _pwd\n"
+      "print os.path.abspath(_pwd)\n"
+      "if not os.path.isfile(os.path.join(os.path.abspath(_pwd), 'apps', 'leap', 'app.py')):\n"
+      "    print '[ERROR] apps/leap/app.py not found in the current folder, quitting.'\n"
+      "    sys.exit(1)\n"
+      /* XXX in osx we should only pass this if not inside a bundle */
+      "sys.argv.append('--standalone')\n"
+      "sys.argv.append('--debug')\n", global, global);
+    
 
     py::exec_file("apps/leap/app.py",
                   global,

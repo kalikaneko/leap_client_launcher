@@ -29,3 +29,5 @@ pkg/osx/dist
 pkg/osx/build
 MANIFEST
 _trial_temp*
+build-osx
+tuntaposx
