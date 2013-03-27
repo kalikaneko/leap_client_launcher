@@ -137,6 +137,9 @@ main(int argc, char** argv)
       "            _pwd]\n"
       "import os\n"
       "import encodings.idna\n" // we need to make sure this is imported
+      "if not os.path.isfile(os.path.join(os.getcwd(), 'apps', 'leap', 'app.py')):\n"
+      "    print '[ERROR] apps/leap/app.py not found in the current folder, quitting.'\n"
+      "    sys.exit(1)\n"
       "sys.argv.append('--standalone')\n", global, global);
 
     py::exec_file("apps/launcher.py",
