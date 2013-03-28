@@ -131,10 +131,17 @@ main(int argc, char** argv)
 
     py::exec(
       "import sys\n"
+      "old_syspath = sys.path\n"
       "sys.path = [_pwd + '/lib',\n"
+      "            _pwd + '/lib/site-packages',\n"
       "            _pwd + '/apps',\n"
       "            _pwd + '/apps/eip',\n"
       "            _pwd]\n"
+      "if sys.platform == 'darwin':\n"
+      "    sys.path = sys.path + old_syspath\n"
+      "print '[+ DEBUG: sys.path]'\n"
+      "for p in sys.path: print p\n"
+      "print '[+ DEBUG]'\n"
       "import os\n"
       "import encodings.idna\n" // we need to make sure this is imported
       "if not os.path.isfile(os.path.join(os.getcwd(), 'apps', 'leap', 'app.py')):\n"
