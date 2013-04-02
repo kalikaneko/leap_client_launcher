@@ -186,9 +186,8 @@ make_bundle() {
 
 	# copy tuntap installer and openvpn binary
 	# XXX we need to build this here.
-	mkdir "${APP}"/Resources
-	cp /usr/bin/openvpn.leap "${APP}"/Resources/
-	cp -r "${TUNTAPINST}.app" "${APP}/Resources"
+	cp /usr/bin/openvpn.leap "${APP}"/Contents/Resources/
+	cp -r "${TUNTAPINST}.app" "${APP}/Contents/Resources"
 
 
 	act "Done."
