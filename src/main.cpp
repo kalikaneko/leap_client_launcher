@@ -114,7 +114,7 @@ int
 main(int argc, char** argv)
 {
   try {
-    full_path = fs::current_path();
+    fs::path full_path(fs::current_path());
 
     updateIfNeeded();
 
