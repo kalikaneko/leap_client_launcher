@@ -1,0 +1,12 @@
+#!/bin/bash
+######################################################
+# Launcher for the LEAP Client under OSX
+######################################################
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+export DYLD_LIBRARY_PATH=$DIR
+# ---------------------------
+# DEBUG Info:
+export DYLD_PRINT_LIBRARIES=1
+# ---------------------------
+#export LD_LIBRARY_PATH=$DIR
+cd "${DIR}" && ./launcher $1 $2 $3 $4 $5

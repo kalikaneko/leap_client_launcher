@@ -9,15 +9,10 @@ boost.python
 boost.filesystem
 boost.system
 
-how to build
----------------
-mkdir build
-cd build
-cmake ..
-make
-
 osx
 -------
+
+./build.osx.zsh clean && ./build.osx.zsh
 
 Download and compile boost.python:
 
@@ -28,9 +23,12 @@ Add this to your .zshrc:
 
  export DYLD_LIBRARY_PATH="$HOME/src/boost_install/lib:${DYLD_LIBRARY_PATH}"
 
-random notes
-------------
-kalis-macbook 福 /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7 
-2858 ◯ : cp -r config ~/leap/leap-launcher-osx/lib/lib/python2.7
+Download and install Qt 4.7.4:
+
+ftp://ftp.qt-project.org/qt/source/qt-mac-opensource-4.7.4.dmg
+
+And PySide 1.1.0 for Python 2.6:
+
+http://pyside-1.1.0-qt47-py26apple.pkg
 
 
