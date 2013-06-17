@@ -4,10 +4,14 @@
 #
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 export DYLD_LIBRARY_PATH=$DIR
+export PATH=$DIR/../Resources/:$PATH
 # ---------------------------
 # DEBUG Info -- enable this if you
 # are having problems with dynamic libraries loading
 
 #export DYLD_PRINT_LIBRARIES=1
 # ---------------------------
-cd "${DIR}" && ./launcher $1 $2 $3 $4 $5
+# XXX FIXME !!!!!!!!!!!!!!!!!!
+# REMOVE NOCHECK FLAG FOR PRODUCTION USE !!!!!!!!
+#
+cd "${DIR}" && ./launcher --danger $1 $2 $3 $4 $5

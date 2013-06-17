@@ -134,6 +134,8 @@ main(int argc, char** argv)
       "import os\n"
       "import sys\n"
       "import site\n"
+      "import new\n"
+      "import platform\n"
       "old_syspath = sys.path\n"
       "sys.path = [_pwd + '/lib',\n"  /* XXX not needed after site init */
       "            _pwd + '/lib/site-packages',\n"
@@ -154,8 +156,10 @@ main(int argc, char** argv)
       "if not os.path.isfile(os.path.join(os.path.abspath(_pwd), 'apps', 'leap', 'app.py')):\n"
       "    print '[ERROR] apps/leap/app.py not found in the current folder, quitting.'\n"
       "    sys.exit(1)\n"
-      /* XXX in osx we should only pass this if not inside a bundle */
-      "sys.argv.append('--standalone')\n"
+      /* XXX removing standalone from osx */
+      /* the problem is with the config folder; dmg volume is not writeable, neither /Applications */
+      "if not platform.system() == 'Darwin':"
+      "    sys.argv.append('--standalone')\n"
       "sys.argv.append('--debug')\n", global, global);
     
 

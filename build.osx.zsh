@@ -84,17 +84,10 @@ do_build() {
 
 	notice "Cloning leap_client and copy to dist dir"
 
-	# XXX -----------------------
-	# Change to leap repo again
-	#git clone $REPOCLIENT
-	#cd leap_client
-	#git checkout develop
-	#
-	#
-	git clone git://github.com/kalikaneko/leap_client.git
+	git clone $REPOCLIENT
 	cd leap_client
-	git checkout bug/fix-eip-osx-launch
-	# ---------------------------
+	git checkout develop
+	
 	python setup.py version
 	make resources
 	make ui
@@ -151,6 +144,15 @@ copy_deps() {
 	# site.init(path) will make those eggs accessible from site-packages
 	cp -r $LEAP_SITEPKG/*.egg $LAUNCHER_LIB/site-packages/
 	cp $LEAP_SITEPKG/*.pth $LAUNCHER_LIB/site-packages/
+
+	# copy leap common, workaround namespace :(
+	# should upload egg instead...
+	cp -r $LEAP_SITEPKG/leap/common $LAUNCHER_LIB/../apps/leap/
+	# XXX should check that the .pth is not there...
+
+	# frecking g**gle is lame packaging its own shit
+	cp -r $LEAP_SITEPKG/protobuf $LAUNCHER_LIB/site-packages/
+	cp -r $LEAP_SITEPKG/google $LAUNCHER_LIB/site-packages/
 
 	act "Done."
 
