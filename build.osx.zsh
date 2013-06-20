@@ -29,7 +29,16 @@ STARTUPDIR=${BUILDDIR}/tuntaposx/StartupItems
 EXTENSIDIR=${BUILDDIR}/tuntaposx/Extensions
 TUNTAPINST=${BUILDDIR}/tuntap-installer
 QTDEPLOY="macdeployqt"
+
 REPOCLIENT="git://leap.se/leap_client"
+CLIENTBRANCH="develop"
+
+# XXX ----------------------------------------------------
+# test builds
+REPOCLIENT="https://github.com/kalikaneko/leap_client.git"
+CLIENTBRANCH="osx-builds"
+# --------------------------------------------------------
+
 REPOTUNTAP="https://github.com/bbits/tuntaposx.git"
 REPOCOCOASUDO="https://github.com/kalikaneko/cocoasudo.git"
 QUIET=0
@@ -83,11 +92,16 @@ do_build() {
 	cp src/launcher $LAUNCHER_DIR
 	act "Done."
 
+	# XXX ------------------------------------------
+	# split into client-clone --
 	notice "Cloning leap_client and copy to dist dir"
 
 	git clone $REPOCLIENT
 	cd leap_client
-	git checkout develop
+	git checkout $CLIENTBRANCH
+
+	# XXX should get the tags here if the right flags are
+	# passed
 	
 	python setup.py version
 	make resources
