@@ -31,6 +31,7 @@ TUNTAPINST=${BUILDDIR}/tuntap-installer
 QTDEPLOY="macdeployqt"
 REPOCLIENT="git://leap.se/leap_client"
 REPOTUNTAP="https://github.com/bbits/tuntaposx.git"
+REPOCOCOASUDO="https://github.com/kalikaneko/cocoasudo.git"
 QUIET=0
 DEBUG=0
 
@@ -110,14 +111,24 @@ build_tuntap() {
 	act "Done."
 }
 
+build_cocoasudo() {
+	cd $TOPSRC
+	notice "Copying cocoasudo (should compile it instead)"
+	cp /Users/kaliy/leap/cocoasudo/build/Release/cocoasudo $LAUNCHER_DIR/
+	chmod +x $LAUNCHER_DIR/cocoasudo
+
+	# XXX compile here instead
+	#git clone $REPOCOCOASUDO
+	#cd cocoasudo
+	#xcodebuild -project cocoasudo.xcodeproj
+}
+
 make_tuntap_installer() {
 	platypus -P ${OSXPKG}/install-tuntaposx.platypus -y ${TUNTAPINST}
 	cp -r ${EXTENSIDIR} ${TUNTAPINST}.app/Contents/
 	cp -r ${STARTUPDIR} ${TUNTAPINST}.app/Contents/
 
-	# XXX well, shit, the platypus authentication elevation is not enough for
-	# installing the kext. so let's use the ugly osascript wrapper again
-	# until we can write a decent c++ wrapper to do that.
+	# XXX use cocoasudo for installing this too!
 	
 	mv ${TUNTAPINST}.app/Contents/Resources/script ${TUNTAPINST}.app/Contents/Resources/install-kext
 	cp ${OSXPKG}/install-tuntaposx.osasc-wrapper ${TUNTAPINST}.app/Contents/Resources/script
@@ -170,6 +181,9 @@ make_bundle() {
 	mv $LAUNCHER_DIR/launcher $APP/Contents/MacOS
 	mv $LAUNCHER_DIR/apps $APP/Contents/MacOS
 	mv $LAUNCHER_DIR/lib $APP/Contents/MacOS
+
+	#I have the binary there for now
+	#mv $LAUNCHER_DIR/cocoasudo $APP/Contents/MacOS
 
 	# copy pyside libraries
 	cp "${LIBS_SYSTEM}/libpyside-python2.6.1.1.dylib" "${APP}"/Contents/MacOS
