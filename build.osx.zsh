@@ -25,6 +25,7 @@ BUILDDIR=${TOPSRC}/build-osx
 LAUNCHER_DIR=${BUILDDIR}/leap-launcher-osx
 LAUNCHER_LIB=${LAUNCHER_DIR}/lib
 APP=$LAUNCHER_DIR/leap-client.app
+APPDEF=$LAUNCHER_DIR/"LEAP Client.app"
 STARTUPDIR=${BUILDDIR}/tuntaposx/StartupItems
 EXTENSIDIR=${BUILDDIR}/tuntaposx/Extensions
 TUNTAPINST=${BUILDDIR}/tuntap-installer
@@ -94,7 +95,7 @@ do_build() {
 
 	# XXX ------------------------------------------
 	# split into client-clone --
-	notice "Cloning leap_client and copy to dist dir"
+	#notice "Cloning leap_client and copy to dist dir"
 
 	git clone $REPOCLIENT
 	cd leap_client
@@ -103,10 +104,18 @@ do_build() {
 	# XXX should get the tags here if the right flags are
 	# passed
 	
-	python setup.py version
-	make resources
-	make ui
-	cp -r src/leap $LAUNCHER_DIR/apps/
+	#python setup.py version
+	#make resources
+	#make ui
+	#cp -r src/leap $LAUNCHER_DIR/apps/
+	# ----------------------------------------------
+	#
+	
+	#notice "Copying leap_client from develop to dist dir"
+	# XXX hack mode on
+	cp -r /Users/kaliy/leap/leap_client/src/leap $LAUNCHER_DIR/apps/ 
+	# XXX hack mode off
+	
 	cd $TOPSRC
 	act "Done."
 }
@@ -249,7 +258,12 @@ make_dmg() {
 	cd $BUILDDIR/leap_client
 	GITREV=`git rev-parse --short HEAD`
 	DMG=$BUILDDIR/dist/leap-client-${GITREV}.dmg
-	hdiutil create -format UDBZ -srcfolder $APP $DMG
+
+	echo "app:"
+	echo $APP
+	echo $APPDEF
+	mv $APP $APPDEF
+	hdiutil create -format UDBZ -srcfolder $APPDEF $DMG
 	act "Done."
 }
 
