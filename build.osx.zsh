@@ -154,6 +154,11 @@ copy_deps() {
 	cp -r $LEAP_SITEPKG/protobuf $LAUNCHER_LIB/site-packages/
 	cp -r $LEAP_SITEPKG/google $LAUNCHER_LIB/site-packages/
 
+	# moar special case, alas
+	cp $LEAP_SITEPKG/_scrypt.so $LAUNCHER_LIB/site-packages/
+	cp $LEAP_SITEPKG/scrypt.py $LAUNCHER_LIB/site-packages/
+	cp $LEAP_SITEPKG/six.py $LAUNCHER_LIB/site-packages/
+
 	act "Done."
 
 }
