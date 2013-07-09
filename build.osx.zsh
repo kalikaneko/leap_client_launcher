@@ -22,6 +22,7 @@ VERSION="0.0.1"
 TOPSRC=`pwd`
 OSXPKG=${TOPSRC}/pkg/osx
 BUILDDIR=${TOPSRC}/build-osx
+DISTDIR=$BUILDDIR/dist
 LAUNCHER_DIR=${BUILDDIR}/leap-launcher-osx
 LAUNCHER_LIB=${LAUNCHER_DIR}/lib
 APP=$LAUNCHER_DIR/leap-client.app
@@ -104,18 +105,24 @@ do_build() {
 	# XXX should get the tags here if the right flags are
 	# passed
 	
-	#python setup.py version
 	#make resources
 	#make ui
-	#cp -r src/leap $LAUNCHER_DIR/apps/
+	#
+	#generate an updated _version
+	#python setup.py build
+	#cp build/leap/_version $LAUNCHER_DIR/apps/leap/
+	# XXX we should get the whole build tree from there
+
 	# ----------------------------------------------
 	#
-	
-	#notice "Copying leap_client from develop to dist dir"
-	# XXX hack mode on
+	notice "Copying leap_client from develop to dist dir"
+	#cp -r src/leap $LAUNCHER_DIR/apps/
+	#
+	# XXX hack mode on ---- You need to do a fresh build in the src -------------
 	cp -r /Users/kaliy/leap/leap_client/src/leap $LAUNCHER_DIR/apps/ 
+	cp /Users/kaliy/leap/leap_client/build/lib/leap/_version.py $LAUNCHER_DIR/apps/leap/
 	# XXX hack mode off
-	
+	# ---------------------------------------------------------------------------
 	cd $TOPSRC
 	act "Done."
 }
@@ -255,15 +262,18 @@ make_bundle() {
 
 make_dmg() {
 	notice "Making DMG for distribution"
-	cd $BUILDDIR/leap_client
-	GITREV=`git rev-parse --short HEAD`
-	DMG=$BUILDDIR/dist/leap-client-${GITREV}.dmg
-
-	echo "app:"
-	echo $APP
-	echo $APPDEF
 	mv $APP $APPDEF
-	hdiutil create -format UDBZ -srcfolder $APPDEF $DMG
+	cp $OSXPKG/Makefile $DISTDIR
+	cp $OSXPKG/leap-template.dmg.bz2 $DISTDIR
+	cd $DISTDIR
+	make
+
+	# XXX old method, manual --------------------------
+	#cd $BUILDDIR/leap_client
+	#GITREV=`git rev-parse --short HEAD`
+	#DMG=$BUILDDIR/dist/leap-client-${GITREV}.dmg
+	#hdiutil create -format UDBZ -srcfolder $APPDEF $DMG
+	
 	act "Done."
 }
 
@@ -274,4 +284,4 @@ copy_deps
 make_bundle
 make_dmg
 
-notice "Distribution ready at $LAUNCHER_DIR"
+notice "Distribution .dmg ready at $DISTDIR! Happy release!"
