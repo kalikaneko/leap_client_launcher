@@ -158,10 +158,13 @@ make_tuntap_installer() {
 	cp -r ${EXTENSIDIR} ${TUNTAPINST}.app/Contents/
 	cp -r ${STARTUPDIR} ${TUNTAPINST}.app/Contents/
 
-	# XXX use cocoasudo for installing this too!
-	
 	mv ${TUNTAPINST}.app/Contents/Resources/script ${TUNTAPINST}.app/Contents/Resources/install-kext
-	cp ${OSXPKG}/install-tuntaposx.osasc-wrapper ${TUNTAPINST}.app/Contents/Resources/script
+	cp ${OSXPKG}/install-tuntaposx.cocoasudo-wrapper ${TUNTAPINST}.app/Contents/Resources/script
+	cp $LAUNCHER_DIR/cocoasudo ${TUNTAPINST}.app/Contents/Resources/
+
+	# copy the little tiff for cocoasudo to show a custom leap icon
+	cd $TOPSRC
+	cp -r pkg/osx/leap-client.app/Contents/Resources/leap-client.tiff ${TUNTAPINST}.app/Contents/Resources/
 
 	act "Done."
 }

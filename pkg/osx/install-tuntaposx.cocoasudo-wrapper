@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Kali: I am using osascript here in a rush, because cocoasudo is not letting me execute the kextload as root.
+# Probably there will be a much better approach, but this is something quick and dirty! :O
+
+set -e
+echo "Installing tuntaposx drivers..."
+./cocoasudo --icon=./leap-client.tiff --prompt="LEAP needs administrative privileges to install TUN/TAP driver." osascript -e 'do shell script "./install-kext" with administrator privileges'
+echo "Done"
